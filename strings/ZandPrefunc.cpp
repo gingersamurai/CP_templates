@@ -21,7 +21,6 @@ typedef pair<long long, long long> pll;
 #define fkm(b, c) for(auto k = b; k >= c; k--)
 #define all(a) a.begin(), a.end()
 #define rall(a) a.rbegin(), a.rend()
-#define sz(a) (ll)(a.size())
 #define fs first
 #define sd second
 #define endl "\n"
@@ -40,4 +39,34 @@ void run(){
  cout<<endl;
  system("pause");
 }
+vector<ll> pref_func(string& s){
+    ll n = s.size();
+    vector<ll>pi(n);
+    fi(1, n-1){
+        ll j = pi[i - 1];
+        while (j > 0 && s[i] != s[j]){
+            j = pi[j - 1];
+        }
+        if(s[i] == s[j]){
+            j++;
+        }
+        pi[i] = j;
+    }
+    return pi;
+}
 
+vector<ll> pref_func(string& s){
+    ll n = s.size();
+    vector<ll>pi(n);
+    fi(1, n-1){
+        ll j = pi[i - 1];
+        while (j > 0 && s[i] != s[j]){
+            j = pi[j - 1];
+        }
+        if(s[i] == s[j]){
+            j++;
+        }
+        pi[i] = j;
+    }
+    return pi;
+}
