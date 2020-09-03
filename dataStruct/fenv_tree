@@ -1,0 +1,27 @@
+struct ftree{
+    ll n;
+    vector<ll>t;
+
+    ll sum(ll r){
+        ll result = 0;
+        for(; r >= 0; r = (r & (r+1)) - 1){
+            result += t[r];
+        }
+        return result;
+    }
+
+    ll sum(ll l, ll r){
+        if(l == 0) return sum(r);
+        return sum(r) - sum(l-1);
+    }
+
+    void upd(ll id, ll x){
+        for(; id < n; id = (id | (id+1))) t[id] += x; 
+    }
+
+    ftree(vector<ll>& a){
+        n = sz(a);
+        t.resize(n, 0);
+        fi(0, n-1) upd(i, a[i]);
+    }
+};
