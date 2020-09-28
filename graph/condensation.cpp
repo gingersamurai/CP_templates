@@ -1,58 +1,99 @@
-
-void run(){
-    cout<<endl;
+﻿#include<vector>
+#include <string>
+#include<algorithm>
+#include <iostream>
+#include <queue>
+#include<set>
+#include<unordered_set>
+#include<stack>
+#include<cmath>
+#include<math.h>
+#include<map>
+#include<unordered_map>
+#include<random>
+#include<chrono>
+#include <ctime>
+using namespace std;
+typedef long long ll;
+typedef pair<long long, long long> pll;
+#define mp make_pair
+#define fi(b, c) for(ll i = b; i <= c; i++)
+#define fj(b, c) for(ll j = b; j <= c; j++)
+#define fk(b, c) for(ll k = b; k <= c; k++)
+#define fq(b, c) for(ll q = b; q <= c; q++)
+#define fw(b, c) for(ll w = b; w <= c; w++)
+#define fim(b, c) for(ll i = b; i >= c; i--)
+#define fjm(b, c) for(ll j = b; j >= c; j--)
+#define fkm(b, c) for(l k = b; k >= c; k--)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+// #define sz(a) (ll)(a.size())
+#define fs first
+#define sd second
+#define endl "\n"
+#define sz(x) (ll)(x.size())
+ 
+const ll inf = 1e9 + 123, llinf = 1e18 + 829, ura = 684395049517, mod = 998244353;
+void xru() {
+    // 9 BOG 4EL
+    //  setlocale(LC_ALL, "rus");
+    //  freopen(".in", "r", stdin);
+    //  freopen(".out", "w", stdout);
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+}
+void run() {
+    cout << endl;
     system("pause");
 }
+/////////////////////////////////
+ll n, m, cnt = 0;
+vector<vector<ll>> g, tg;
+vector<bool> used;
+vector<ll> comp, order;
+/////////////////////////////////
 
-void dfs1(ll x, vector< vector<ll> >& g, vector< bool >& used, vector< ll >& order){
-    used[x] = true;
-    for(ll v: g[x]){
-        if(!used[v]){
-            dfs1(v, g, used, order);
-        }
+void topSort(ll v){
+    used[v] = true;
+    for(ll to: g[v]){
+        if(!used[to]) topSort(to);
     }
-    order.push_back(x);
+    order.push_back(v);
 }
 
-void dfs2(ll x, vector< vector<ll> >& gr, vector< bool >& used, vector< ll >& comp, ll id){
-    used[x] = true;
-    comp[x] = id;
-    for(ll v: gr[x]){
-        if(!used[v]){
-            dfs2(v, gr, used, comp, id);
-        }
+void cond(ll v){
+    used[v] = true;
+    comp[v] = cnt;
+    for(ll to: tg[v]){
+        if(!used[to]) cond(to);
     }
 }
-
 
 int main() {
-    ll n, m;
     cin >> n >> m;
-    vector< vector <ll> > g(n), gr(n);
-    vector< bool > used(n, false);
-    vector<ll>comps(n), order;
-    fi (0, m-1) {
+    g.resize(n);
+    tg.resize(n);
+    used.resize(n, false);
+    comp.resize(n, 0);
+    fi(0, m-1){
         ll x, y;
         cin >> x >> y;
         x--, y--;
         g[x].push_back(y);
-        gr[y].push_back(x);
+        tg[y].push_back(x);
     }
     fi(0, n-1){
-        if(!used[i]){
-            dfs1(i, g, used, order);
-        }
+        if(!used[i]) topSort(i);
     }
     reverse(all(order));
     fi(0, n-1) used[i] = false;
-    ll id = 0;
-    for(ll now: order){
-        if(!used[now]){
-            id++;
-            dfs2(now, gr, used, comps, id);
+    fi(0, n-1){
+        if(!used[order[i]]){
+            cnt++;
+            cond(order[i]);
         }
     }
-    cout << id << endl;
-    cout(comps);
-    run();
+    cout << cnt << endl;
+    fi(0, n-1) cout << comp[i] << " ";
 }
