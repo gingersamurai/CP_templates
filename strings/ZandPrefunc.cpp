@@ -39,20 +39,22 @@ void run(){
  cout<<endl;
  system("pause");
 }
-vector<ll> pref_func(string& s){
+vector<ll> z_func(string& s){
     ll n = s.size();
-    vector<ll>pi(n);
+    vector<ll> z(n);
+    ll l = 0, r = 0;
     fi(1, n-1){
-        ll j = pi[i - 1];
-        while (j > 0 && s[i] != s[j]){
-            j = pi[j - 1];
+        if(i <= r){
+            z[i] = min(z[i - l], r - i + 1);
         }
-        if(s[i] == s[j]){
-            j++;
+        while(i + z[i] < n && s[i + z[i]] == s[z[i]]){
+            z[i]++;
         }
-        pi[i] = j;
+        if(i + z[i] - 1 > r){
+            l = i, r = i + z[i] - 1;
+        }
     }
-    return pi;
+    return z;
 }
 
 vector<ll> pref_func(string& s){
